@@ -1,0 +1,260 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Short Sectioned Assignment
+% LaTeX Template
+% Version 1.0 (5/5/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{University of California San Diego} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge CSE 200 Final Exam\\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{Sai Bi} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+
+\section*{Problem 2: NP-Completeness}
+Given graph $G = (V, E)$, we construct a new graph $G^* = (V^*, E^*)$ as following:
+\begin{enumerate}
+  \item For each node $v_i \in V$, we add a node $v_i^*$ to $G^*$.
+  \item For each edge $(v_i, v_j) \in E$, we add a node $v^*_{i, j}$ to $G^*$.
+  % \item For each edge $(v_i, v_j) \in E$, we add an edge between $(v_i^*, v_j^*)$ to $G^*$.  
+  \item \label{item:1}
+    For each node $v^*_{i, j}$ in $G^*$, we add an edge between $v_{i, j}^*$ and $v_i^*$ and
+    another edge between $v_{i, j}^*$ and $v_j^*$.
+  \item For each pair of nodes like $v_{i, j}^*$ in $G^*$ we add an edge between them. 
+\end{enumerate}
+
+With graph $G^*$, we claim that there is an independent set of size $k$ in $G$ if and only if there is a
+$3$-separated subset of size $k$ in $G^*$.
+
+\vspace{0.2cm}
+\textbf{Claim 1:}
+If there is an independent set of size $k$ in $G$, then there is a $3$-separated subset of size $k$ in $G^*$.
+
+\textbf{Proof:}
+Let $I = \{v_{a_1}, v_{a_2},\dots, v_{a_k}\}$ be an independent set in $G$. We prove that 
+$I^* = \{v_{a_1}^*,  v_{a_2}^*,\dots, v_{a_k}^*\}$ is a $3$-separated subset in $G^*$.
+
+For a pair of node $v^*_{a_i}, v_{a_j}^*$, they are not adjacent, because when constructing $G^*$,
+we haven't added any edges between  nodes that are corresponding to original nodes in $G$. Also they
+don't share a common neighbour, otherwise according to Step~\ref{item:1}, the common neighbor must
+be $V^*_{a_i, a_j}$, which means that there is an edge between $v_{a_i}$ and $v_{a_j}$ in $G$,
+which contradicts the fact that $I$ is an independent set. Therefore, each pair of nodes in $I^*$
+are not adjacent and don't share a common neighbour, and $I^*$ is a $3$-separated subset of size $k$
+in $G^*$.
+
+\vspace{0.2cm}
+\textbf{Claim 2:}
+If there is a $3$-separated subset of size $k$ in $G^*$, there is an independent set of size $k$ in $G$,   
+
+\textbf{Proof:}
+Without loss of generality, we assume that $G^*$ is a connected graph. If it is not, obviously 
+$3$-separated subset of each connected component can be combined to form a new $3$-separated subset.
+And we only need to consider each connected component separately. 
+
+\vspace{0.2cm}
+Let $I^*$ be a $3$-separated subset of size $k$ in $G^*$.  
+We first consider the case when all nodes in $I^*$ are in the form of $v^*_{a_i}$. That is,
+$I^* = \{v_{a_1}^*,  v_{a_2}^*,\dots, v_{a_k}^*\}$. In this case, we claim that 
+$I = \{v_{a_1}, v_{a_2}, \dots, v_{a_k}\}$ is also an independent set of size $k$ in $G$. Otherwise,
+assume that $v_{a_i}$ and $v_{a_j}$ are adjacent, it means there is an edge between them. According
+to Step~\ref{item:1}, $v*_{a_i}$ and $v^*_{a_j}$  must share a common neighbour $v^*_{a_i, a_j}$,
+which contradicts the fact that $v^*_{a_i}$ and $v^*_{a_j}$ are $3$-separated.
+
+\vspace{0.2cm}
+Now we consider the case when there is a node $v^*_{a_1, a_2}$ in $I^*$. In this case, we claim that 
+$k$ must be $1$. That is, $I^*$ only have a single element $v^*_{a_1, a_2}$. First, it is impossible
+to have another $v^*_{a_i, a_j}, i \neq 1 or j \neq 2$, because there is an edge between any two
+nodes in the form of $v^*_{a_i, a_j}$. Assume there is another node $v^*_{a_i}$ in $I^*$. Since the
+$G^*$ is connected, $v^*_{a_i}$ is connected to some nodes $v^*_{a_i, a_j}$, which must be adjacent
+to $v^*_{a_1, a_2}$, which contradicts the fact that $I^*$ is $3$-separated. Therefore, we know that 
+$I^*$ has only one element, and we can pick any node in $G$ to form an independent of size $1$.
+
+\vspace{0.2cm}
+Since the transform from $G$ to $G^*$ has time complexity $O(|V| + |E|) + O(|E|^2)$,
+which is in polynomial time.  
+Given Claim 1 and Claim 2, we can show that independent set problem can be reduced to $3$-separated
+set problem in polynomial time. 
+
+For any given solution $S$ to $3SS$, first we could check whether 
+its size is equal to $k$ in $O(k)$ time. Also to check whether two vertices are $3$-separated, we
+could build an adjacent matrix of all vertices in $V$ in $O(|V|^2)$ time, and then for any two
+vertex $v_i$ and $v_j$ in $S$, we could check whether they are $3$-separated in $O(|V|)$ time. Hence
+in total it takes $O(|V|^3)$ time to check whether $S$ is a valid solution. Therefore, $3SS$ is in
+$NP$.
+
+In summary, we have proved that $3SS$ is in NP-Complete. 
+
+\section*{Problem 3: NP-hardness}
+We show a reduction to this problem from $3$-SAT. Given a clause in $3$-SAT, we turn it into an
+equation as following:
+\begin{enumerate}
+  \item For a literal $x$, we add a term $(x-1)^2$.
+  \item For a literal $\lnot y$, we add a term $y^2$.
+\end{enumerate}
+Obviously each clause will have $3$ terms. And we multiply them together as a polynomial $P_i$ for
+the $i$-th clause.
+For example, suppose we have a clause $x \lor \lnot y \lor z$, then the corresponding polynomial
+would be $P_i = (x-1)^2 y^2 (z-1)^2$.
+
+After getting the polynomial for each equation, we sum them up to get a single polynomial. Suppose
+there are $N$ clauses, and let $P$ be the final polynomial, we have $P = \sum_{i=1}^{N} P_i$. We
+claim that the original $3$-SAT problem is satisfiable if and only if there exists a solution to the
+function $P = 0$.
+
+\textbf{Claim 1:} If there is a solution to $3$-SAT, there is also a solution to $P = 0$.
+
+\textbf{Proof:}
+In the solution to $3$-SAT, if a variable is true, we set the value of corresponding variable in $P$
+to $1$ and otherwise we set it to $0$. In this way we get a solution to $P = 0$. The proof is as
+following:
+
+For a clause $P_i$ , we know that at least one literal in that clause is true. If
+the literal is in the form of $x$, we know that $x$ is true and we have set the value of variable to
+$1$ in $P$,  since there is a factor
+$(x-1)^2$ in $P_i$, $P_i$ will be zero. If the literal is in the form of $\lnot x$, we have set the
+value of variable to $0$ in $P$, since there is a factor $x^2$ in $P_i$, $P_i$ will also be zero. That
+is, by assigning values to variables in above way, we will have $P_i = 0$ for all $i$. Therefore we
+have got a solution to $P= 0$.
+
+\textbf{Claim 2:} If there is a solution to $P=0$, there is also a solution to $3$-SAT.
+
+\textbf{Proof:}
+Since each term $P_i$ is in the form of a product of squares, so $P_i \geq 0$. $P$ is in the form of
+a sum of squares, so when $P=0$, $P_i = 0$ for all $i$. If $P_i = 0$, there are two cases:
+\begin{enumerate}
+  \item there is a factor in the form of $x^2$ equal to zero, in this case, we know that there is
+    a literal $\lnot x$ in corresponding clause, we could set value of $x$ to false then the clause
+    will be true.
+  \item there is a factor in the form of $(x-1)^2$ equal to zero, in this case, we know that there is
+    a literal $x$ in corresponding clause, we could set value of $x$ to true then the clause
+    will also be true.
+\end{enumerate}
+For the variables whose value are not set in this process, it means that their values don't affect
+the satisfiability of $3$-SAT, they can be set to either true or false.
+Therefore in this way we could get a solution to $3$-SAT.
+
+Obviously we know that the above transformation from $3$-SAT to polynomial equations can be done in
+polynomial time. Given above claims, we know that the given problem is NP-hard.
+
+%Explanation of why $SOL$ might not be in $\NP$: Suppose $p$ is a polynomial with degree $> 5$. We know that $p$ does not have algebraic roots in general. Therefore, given a set of real numbers $a_1,\dots,a_n$, we cannot verify whether it is a root of $p$ in polynomial time.
+
+\section*{Problem 4: Consequences of $P = NP$}
+The general idea is that we prove $\epsilon$-median problem is in the class of \textit{bounded-error
+probabilistic polynomial time}(BPP) problem.
+
+Since $|y| = n$, so there are $2^n$ different values of $F(x, y)$ on $x$. 
+Naively if we want to get the median of $2^n$ elements, we need to check $2^n$ elements one by one.
+To avoid this, we uniformly sample a number of elements from $2^n$ elements, and claim that when
+this number is large enough, there is a high probability that the median of sampled elements is also
+the $\epsilon$-median of original problem.
+
+If we put all $2^n$ values of $F(x, y)$ in an array and sort them in ascending order, we could
+divide the array into three parts: the first part $P_1$ is the first $(\frac{1}{2}-\epsilon) 2^n$
+elements, the second part $P_2$ is the following $\epsilon 2^n$ elements in the array, and the third
+part $P_3$ is the remaining $(\frac{1}{2}-\epsilon) 2^n$ on the right.
+
+Suppose that we are sampling $2k+1$ elements, let $M$ be the median of the sampled elements, there
+are three cases here:
+\begin{enumerate}
+  \item $M \in P_1$. In this case, there must be $k+1$ or more elements sampled from $P_1$. In other
+    words, there are no more than $k$ elements sampled from $P_2$ and $P_3$. Let $X$ be the number of
+    elements sampled from $P_2$ and $P_3$, we have the following:
+    \begin{align}
+      \mu[X] & = \frac{1 + \epsilon}{2} (2k+1) \\
+      \delta = 1 - \frac{k}{\mu} &= \frac{1 + \epsilon + 2k\epsilon}{(1+\epsilon)(2k+1)} \Rightarrow 
+      0 \leq \delta \leq 1\\
+      P(X \leq k) &= P(X \leq (1 - \delta) \mu) \leq e^{-\frac{\mu \delta^2}{2}} 
+      = e^{-\frac{(u-k)^2}{2u}} (\text{\textit{Chernoff Bounds}}) 
+    \end{align}
+    That is the probability of $M \in P_1$ is at most $e^{-\frac{(u-k)^2}{2u}}$. 
+  \item $M \in P_3$. Similar to the case where $M \in P_1$, we also know that the probability of $M
+    \in P_3$ is at most $e^{-\frac{(u-k)^2}{2u}}$. 
+  \item $M \in P_2$. We have the following:
+    \begin{align}
+    P(M \in P_3) &= 1 - P(M \in P_1) - P(M \in P_2) \\
+    &\geq 1 - 2 e^{-\frac{(u-k)^2}{2u}}
+    \end{align}
+\end{enumerate}
+
+To prove that $\epsilon$-median problem is in BPP, we must make the probability of median of sampled
+elements being also median of median of all elements higher than $\frac{3}{4}$. That is, we need to
+guarantee the following:
+\begin{align}
+   P(M \in P_3) &\geq 1 - 2 e^{-\frac{(u-k)^2}{2u}} \geq \frac{3}{4} \\
+   u^2 + k^2 & -2uk -2u\ln 8 \geq 0  
+\end{align}
+After replace $u$ with $\frac{1 + \epsilon}{2} (2k+1)$, we can see that the coefficient of $k^2$ in 
+the equalities is larger than zero, and there must be a solution to the inequality. Also since
+$\epsilon \in O(\frac{1}{poly(n)})$, there will exist a $k$ satisfying the inequality with $k \in
+O(poly(n))$.
+
+Given above analysis, we have proved that we could uniformly random sample $k \in O(poly(n))$
+elements and calculate $F(x, y)$ values in polynomial time, as well as the median of sampled $F$
+values in polynomial time. We have proved that the probability of median of sampled elements 
+being $\epsilon$-median of the original problem is larger than $\frac{3}{4}$. Therefore, the
+original problem is in BPP. If $P = NP$, then we know $P = BPP$. That is, there exist a polynomial
+time algorithm to $\epsilon$-median problem.
+
+
+\end{document}
