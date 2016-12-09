@@ -72,6 +72,28 @@
 %	PROBLEM 1
 %----------------------------------------------------------------------------------------
 
+\section*{Problem 1: Computability of polynomial time}
+
+We prove that PTM is not computable. Otherwise, assume that PTM is computable, then there exists 
+a machine $Q(M, x)$ that determines whether $M$ will halt on input $x$. If $M$ halts, $Q$ outputs
+$1$, otherwise output $0$.
+
+Now we consider a program $U$ which accepts an input $P$. In the program $U$, it will call $Q(P,
+P)$. Following is how $U$ works:
+\begin{enumerate}
+  \item If $Q(P, P)$ output $1$, $U$ will loop forever.
+  \item If $Q(P, P)$ output $0$, $U$ will halt. 
+\end{enumerate}
+
+Now we consider the output of $Q(U, U)$. If $Q(U, U)$ output $1$, then $U$ will loop forever, which
+contradicts to the definition of $Q(U, U)$ where if $Q(U, U)$ output $1$, it means $U$ will
+halt. If $Q(U, U)$ output $0$, then $U$ will halt, which also contradicts to the definition of 
+$Q(U, U)$ where if $Q(U, U)$ output $0$, it means $U$ will loop forever.
+
+Therefore we can conclude that PTM is not computable.
+
+
+
 \section*{Problem 2: NP-Completeness}
 Given graph $G = (V, E)$, we construct a new graph $G^* = (V^*, E^*)$ as following:
 \begin{enumerate}
@@ -197,7 +219,9 @@ Therefore in this way we could get a solution to $3$-SAT.
 Obviously we know that the above transformation from $3$-SAT to polynomial equations can be done in
 polynomial time. Given above claims, we know that the given problem is NP-hard.
 
-%Explanation of why $SOL$ might not be in $\NP$: Suppose $p$ is a polynomial with degree $> 5$. We know that $p$ does not have algebraic roots in general. Therefore, given a set of real numbers $a_1,\dots,a_n$, we cannot verify whether it is a root of $p$ in polynomial time.
+This problem might not be in NP because if the input are irrational numbers, then they have infinite
+number of digits and we don't have an exact and efficient way to represent it and make a decision whether they
+are valid solutions to the problem. Therefore the problem may not be in $NP$.
 
 \section*{Problem 4: Consequences of $P = NP$}
 The general idea is that we prove $\epsilon$-median problem is in the class of \textit{bounded-error
@@ -237,7 +261,7 @@ are three cases here:
     \end{align}
 \end{enumerate}
 
-To prove that $\epsilon$-median problem is in BPP, we must make the probability of median of sampled
+To prove that $\epsilon$-median problem is in BPP, we make the probability of median of sampled
 elements being also median of median of all elements higher than $\frac{3}{4}$. That is, we need to
 guarantee the following:
 \begin{align}
